@@ -42,6 +42,7 @@ namespace Neo.Network.P2P
 
             if (msg.Command == MessageCommand.Disconnect)
             {
+                System.Console.WriteLine("protocolhandler received Disconnect msg");
                 OnDisconnectMessageReceived((DisconnectPayload)msg.Payload);
                 return;
             }
@@ -321,6 +322,7 @@ namespace Neo.Network.P2P
                 case DisconnectReason.MaxConnectionPerAddressReached:
                     try
                     {
+                        System.Console.WriteLine("ProtocolHandler recived disconnect as "+ payload.Reason + " and transfer peers to LocalNode ");
                         var addressList = payload.Data
                             .AsSerializableArray<NetworkAddressWithTime>(AddrPayload.MaxCountToSend)
                             .Select(p => p.EndPoint)

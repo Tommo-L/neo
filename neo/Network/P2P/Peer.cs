@@ -110,6 +110,7 @@ namespace Neo.Network.P2P
                     OnTimer();
                     break;
                 case Peers peers:
+                    Console.WriteLine("Recieved peers from other nodes. peers.Count => " + peers.EndPoints.Count());
                     AddPeers(peers.EndPoints);
                     break;
                 case Connect connect:
@@ -180,6 +181,8 @@ namespace Neo.Network.P2P
             ImmutableInterlocked.Update(ref ConnectingPeers, p => p.Remove(remote));
             if (MaxConnections != -1 && ConnectedPeers.Count >= MaxConnections && !TrustedIpAddresses.Contains(remote.Address))
             {
+                Console.WriteLine("send disconect to " + remote + " as MaxConnectionReached ");
+
                 TcpDisconnect(DisconnectReason.MaxConnectionReached);
                 return;
             }
@@ -187,15 +190,19 @@ namespace Neo.Network.P2P
             ConnectedAddresses.TryGetValue(remote.Address, out int count);
             if (count >= MaxConnectionsPerAddress)
             {
+                Console.WriteLine("send disconect to " + remote + " as MaxConnectionPerAddressReached ");
+
                 TcpDisconnect(DisconnectReason.MaxConnectionPerAddressReached);
             }
             else
             {
+                Console.WriteLine("remote => " + remote + " tcp OnConnected waiting for register");
                 ConnectedAddresses[remote.Address] = count + 1;
                 IActorRef connection = Context.ActorOf(ProtocolProps(Sender, remote, local), $"connection_{Guid.NewGuid()}");
                 Context.Watch(connection);
                 Sender.Tell(new Tcp.Register(connection));
                 ConnectedPeers.TryAdd(connection, remote);
+                Console.WriteLine("register susccessful and create a new RemoteNode");
             }
         }
         protected abstract void TcpDisconnect(DisconnectReason reason);
@@ -225,6 +232,11 @@ namespace Neo.Network.P2P
 
         private void OnTimer()
         {
+            foreach(IPEndPoint connected in ConnectedPeers.Values)
+            {
+                Console.WriteLine("-> " + connected + " connected");
+            }
+
             if (ConnectedPeers.Count >= MinDesiredConnections) return;
             if (UnconnectedPeers.Count == 0)
                 NeedMorePeers(MinDesiredConnections - ConnectedPeers.Count);

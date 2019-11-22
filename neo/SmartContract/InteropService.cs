@@ -244,6 +244,7 @@ namespace Neo.SmartContract
         private static bool Runtime_Notify(ApplicationEngine engine)
         {
             StackItem state = engine.CurrentContext.EvaluationStack.Pop();
+            Console.WriteLine(state.GetString());
             if (!CheckItemForNotification(state)) return false;
             engine.SendNotification(engine.CurrentScriptHash, state);
             return true;

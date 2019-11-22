@@ -221,11 +221,20 @@ namespace Neo.Network.P2P
         }
 
         protected override void TcpDisconnect(DisconnectReason reason)
-        {
+        {            
             var disconnectMessage = CreateDisconnectMessage(reason);
             var command = Tcp.Write.Create(ByteString.FromBytes(disconnectMessage.ToArray()));
 
-            Sender.Tell(new Tcp.Register(ActorRefs.NoSender));
+            try
+            {
+                Sender.Tell(new Tcp.Register(ActorRefs.NoSender));
+                // Sender.Tell(new Tcp.Register(Context.ActorOf(EmptyActor.Props())));
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Found a error here: ");
+                Console.WriteLine(e);
+            }
             Sender.Ask(command).ContinueWith(t => Sender.Tell(Tcp.Abort.Instance));
         }
 

@@ -41,6 +41,8 @@ namespace Neo.Network.P2P
             this.protocol = Context.ActorOf(ProtocolHandler.Props(system));
             LocalNode.Singleton.RemoteNodes.TryAdd(Self, this);
 
+            Console.WriteLine("add remote node: " + remote + " total connected => " + LocalNode.Singleton.ConnectedCount);
+
             var capabilities = new List<NodeCapability>
             {
                 new FullNodeCapability(Blockchain.Singleton.Height)
@@ -229,6 +231,8 @@ namespace Neo.Network.P2P
         {
             LocalNode.Singleton.RemoteNodes.TryRemove(Self, out _);
             base.PostStop();
+
+            Console.WriteLine("remove remote node: " + Remote + " total connected => " + LocalNode.Singleton.ConnectedCount);
         }
 
         internal static Props Props(NeoSystem system, object connection, IPEndPoint remote, IPEndPoint local)
@@ -267,6 +271,9 @@ namespace Neo.Network.P2P
 
             var payload = DisconnectPayload.Create(reason, data);
             var message = Message.Create(MessageCommand.Disconnect, payload);
+
+            Console.WriteLine("send disconect to " + Remote + " attach with addrs and clear msg queue");
+
             SendMessage(message);
 
             isWaitingForDisconnect = true;
