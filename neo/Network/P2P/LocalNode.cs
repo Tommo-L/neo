@@ -227,8 +227,7 @@ namespace Neo.Network.P2P
 
             try
             {
-                Sender.Tell(new Tcp.Register(ActorRefs.NoSender));
-                // Sender.Tell(new Tcp.Register(Context.ActorOf(EmptyActor.Props())));
+                Sender.Tell(new Tcp.Register(ActorRefs.Nobody));
             }
             catch(Exception e)
             {
