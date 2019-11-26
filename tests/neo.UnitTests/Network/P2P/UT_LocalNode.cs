@@ -95,18 +95,18 @@ namespace Neo.UnitTests.Network.P2P
                 var proble = CreateTestProbe();
                 proble.Send(localNode, connected);
 
-                var tcpMessage = proble.ExpectMsg<Tcp.Message>();
-                if (tcpMessage is Tcp.Register)
-                {
-                    System.Console.WriteLine("is Tcp.Register");
-                }
-                else
-                {
-                    System.Console.WriteLine("found non-Tcp.Register => " + tcpMessage);
-                    var writeMsg = (Tcp.Write) tcpMessage;
-                    var msg = writeMsg.Data.ToArray().AsSerializable<Message>();
-                    System.Console.WriteLine("msg command type is => " + msg.Command);
-                }
+                //var tcpMessage = proble.ExpectMsg<Tcp.Message>();
+                //if (tcpMessage is Tcp.Register)
+                //{
+                //    System.Console.WriteLine("is Tcp.Register");
+                //}
+                //else
+                //{
+                //    System.Console.WriteLine("found non-Tcp.Register => " + tcpMessage);
+                //    var writeMsg = (Tcp.Write) tcpMessage;
+                //    var msg = writeMsg.Data.ToArray().AsSerializable<Message>();
+                //    System.Console.WriteLine("msg command type is => " + msg.Command);
+                //}
 
                 // proble.ExpectMsg<Tcp.Register>(); // register msg is earlier than version msg
                 var verionMsg = proble.ExpectMsg<Tcp.Write>();    // remote node send version msg
@@ -179,18 +179,18 @@ namespace Neo.UnitTests.Network.P2P
                 var proble = CreateTestProbe();
                 proble.Send(localNode, connected);
 
-                var tcpMessage = proble.ExpectMsg<Tcp.Message>();
-                if (tcpMessage is Tcp.Register)
-                {
-                    System.Console.WriteLine("is Tcp.Register");
-                }
-                else
-                {
-                    System.Console.WriteLine("found non-Tcp.Register => " + tcpMessage);
-                    var writeMsg = (Tcp.Write) tcpMessage;
-                    var msg = writeMsg.Data.ToArray().AsSerializable<Message>();
-                    System.Console.WriteLine("msg command type is => " + msg.Command);
-                }
+                //var tcpMessage = proble.ExpectMsg<Tcp.Message>();
+                //if (tcpMessage is Tcp.Register)
+                //{
+                //    System.Console.WriteLine("is Tcp.Register");
+                //}
+                //else
+                //{
+                //    System.Console.WriteLine("found non-Tcp.Register => " + tcpMessage);
+                //    var writeMsg = (Tcp.Write) tcpMessage;
+                //    var msg = writeMsg.Data.ToArray().AsSerializable<Message>();
+                //    System.Console.WriteLine("msg command type is => " + msg.Command);
+                //}
 
                 // proble.ExpectMsg<Tcp.Register>(); // register msg is earlier than version msg
                 var verionMsg = proble.ExpectMsg<Tcp.Write>();    // remote node send version msg
