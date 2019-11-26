@@ -1,4 +1,5 @@
 using Akka.IO;
+using Akka.TestKit;
 using Akka.TestKit.Xunit2;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -6,10 +7,9 @@ using Neo.IO;
 using Neo.Network.P2P;
 using Neo.Network.P2P.Capabilities;
 using Neo.Network.P2P.Payloads;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using Akka.TestKit;
-using System.Collections.Generic;
 
 namespace Neo.UnitTests.Network.P2P
 {
@@ -88,12 +88,14 @@ namespace Neo.UnitTests.Network.P2P
             var senderDict = new Dictionary<IPEndPoint, TestProbe>();
             for (int i = 1; i <= LocalNode.Singleton.MaxConnectionsPerAddress; i++)
             {
+                System.Console.WriteLine("Test_Peer_Max_Per_Address_Connection_Reached i => " + i);
                 remote = new IPEndPoint(IPAddress.Parse("192.167.1.1"), 8080 + i);
                 connected = new Tcp.Connected(remote, local);
 
                 var proble = CreateTestProbe();
                 proble.Send(localNode, connected);
-                proble.ExpectMsg<Tcp.Register>(); // register msg is earlier than version msg
+
+                //proble.ExpectMsg<Tcp.Register>(); // register msg is earlier than version msg
                 var verionMsg = proble.ExpectMsg<Tcp.Write>();    // remote node send version msg
                 Message version = verionMsg.Data.ToArray().AsSerializable<Message>();
                 version.Command.Should().Be(MessageCommand.Version); // check version msg
@@ -156,6 +158,7 @@ namespace Neo.UnitTests.Network.P2P
             var senderDict = new Dictionary<IPEndPoint, TestProbe>();
             for (int i = LocalNode.Singleton.ConnectedCount; i < LocalNode.Singleton.MaxConnections; i++)
             {
+                System.Console.WriteLine("Test_Peer_MaxConnection_Reached i => " + i);
                 remote = new IPEndPoint(IPAddress.Parse("191.13.2." + i), 8991);
                 connected = new Tcp.Connected(remote, local);
                 var proble = CreateTestProbe();
