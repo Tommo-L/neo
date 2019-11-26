@@ -96,7 +96,11 @@ namespace Neo.UnitTests.Network.P2P
                 proble.Send(localNode, connected);
 
                 var tcpMessage = proble.ExpectMsg<Tcp.Message>();
-                if (!(tcpMessage is Tcp.Register))
+                if (tcpMessage is Tcp.Register)
+                {
+                    System.Console.WriteLine("is Tcp.Register");
+                }
+                else
                 {
                     System.Console.WriteLine("found non-Tcp.Register => " + tcpMessage);
                     var writeMsg = (Tcp.Write)tcpMessage;
@@ -176,10 +180,14 @@ namespace Neo.UnitTests.Network.P2P
                 proble.Send(localNode, connected);
 
                 var tcpMessage = proble.ExpectMsg<Tcp.Message>();
-                if (!(tcpMessage is Tcp.Register))
+                if (tcpMessage is Tcp.Register)
+                {
+                    System.Console.WriteLine("is Tcp.Register");
+                }
+                else
                 {
                     System.Console.WriteLine("found non-Tcp.Register => " + tcpMessage);
-                    var writeMsg = (Tcp.Write) tcpMessage;
+                    var writeMsg = (Tcp.Write)tcpMessage;
                     var msg = writeMsg.Data.ToArray().AsSerializable<Message>();
                     System.Console.WriteLine("msg command type is => " + msg.Command);
                 }
