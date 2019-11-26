@@ -90,6 +90,7 @@ namespace Neo.UnitTests.Network.P2P
             {
                 remote = new IPEndPoint(IPAddress.Parse("192.167.1.1"), 8080 + i);
                 connected = new Tcp.Connected(remote, local);
+                System.Console.WriteLine("Test_Peer_Max_Per_Address_Connection_Reached i => " + i);
 
                 var proble = CreateTestProbe();
                 proble.Send(localNode, connected);
@@ -158,6 +159,9 @@ namespace Neo.UnitTests.Network.P2P
             {
                 remote = new IPEndPoint(IPAddress.Parse("191.13.2." + i), 8991);
                 connected = new Tcp.Connected(remote, local);
+
+                System.Console.WriteLine("Test_Peer_MaxConnection_Reached i => " + i);
+
                 var proble = CreateTestProbe();
                 proble.Send(localNode, connected);
                 proble.ExpectMsg<Tcp.Register>(); // register msg is earlier than version msg
