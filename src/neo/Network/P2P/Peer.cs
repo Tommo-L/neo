@@ -182,7 +182,6 @@ namespace Neo.Network.P2P
             if (MaxConnections != -1 && ConnectedPeers.Count >= MaxConnections && !TrustedIpAddresses.Contains(remote.Address))
             {
                 Console.WriteLine("send disconect to " + remote + " as MaxConnectionReached ");
-
                 TcpDisconnect(DisconnectReason.MaxConnectionReached);
                 return;
             }
@@ -191,7 +190,6 @@ namespace Neo.Network.P2P
             if (count >= MaxConnectionsPerAddress)
             {
                 Console.WriteLine("send disconect to " + remote + " as MaxConnectionPerAddressReached ");
-
                 TcpDisconnect(DisconnectReason.MaxConnectionPerAddressReached);
             }
             else
@@ -232,7 +230,7 @@ namespace Neo.Network.P2P
 
         private void OnTimer()
         {
-            foreach(IPEndPoint connected in ConnectedPeers.Values)
+            foreach (IPEndPoint connected in ConnectedPeers.Values)
             {
                 Console.WriteLine("-> " + connected + " connected");
             }
