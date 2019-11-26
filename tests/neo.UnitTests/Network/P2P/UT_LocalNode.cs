@@ -179,21 +179,19 @@ namespace Neo.UnitTests.Network.P2P
                 proble.Send(localNode, connected);
 
                 var tcpMessage = proble.ExpectMsg<Tcp.Message>();
+                Tcp.Write verionMsg;
                 if (tcpMessage is Tcp.Register)
                 {
                     System.Console.WriteLine("is Tcp.Register");
+                    verionMsg = proble.ExpectMsg<Tcp.Write>();    // remote node send version msg
                 }
                 else
                 {
                     System.Console.WriteLine("found non-Tcp.Register => " + tcpMessage);
-                    var writeMsg = (Tcp.Write)tcpMessage;
-                    var msg = writeMsg.Data.ToArray().AsSerializable<Message>();
-                    System.Console.WriteLine("msg command type is => " + msg.Command);
+                    verionMsg = (Tcp.Write)tcpMessage;
                 }
-                Assert.IsTrue(tcpMessage is Tcp.Register);
+                //Assert.IsTrue(tcpMessage is Tcp.Register);
 
-                //proble.ExpectMsg<Tcp.Register>(); // register msg is earlier than version msg
-                var verionMsg = proble.ExpectMsg<Tcp.Write>();    // remote node send version msg
                 Message version = verionMsg.Data.ToArray().AsSerializable<Message>();
                 version.Command.Should().Be(MessageCommand.Version);
 
