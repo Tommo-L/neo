@@ -166,9 +166,7 @@ namespace Neo.Network.P2P
                 BroadcastMessage(MessageCommand.GetAddr);
             }
             else
-            {
                 AddPeers(GetIPEndPointsFromSeedList(count));
-            }
         }
 
         public NetworkAddressWithTime[] GetRandomConnectedPeers(int count)
@@ -225,15 +223,7 @@ namespace Neo.Network.P2P
             var disconnectMessage = CreateDisconnectMessage(reason);
             var command = Tcp.Write.Create(ByteString.FromBytes(disconnectMessage.ToArray()));
 
-            try
-            {
-                Sender.Tell(new Tcp.Register(ActorRefs.Nobody));
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Found a error here: ");
-                Console.WriteLine(e);
-            }
+            Sender.Tell(new Tcp.Register(ActorRefs.Nobody));
             Sender.Ask(command).ContinueWith(t => Sender.Tell(Tcp.Abort.Instance));
         }
 
