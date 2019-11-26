@@ -316,24 +316,24 @@ namespace Neo.Network.P2P
 
         private void OnDisconnectMessageReceived(DisconnectPayload payload)
         {
-            switch (payload.Reason)
-            {
-                case DisconnectReason.MaxConnectionReached:
-                case DisconnectReason.MaxConnectionPerAddressReached:
-                    try
-                    {
-                        System.Console.WriteLine("ProtocolHandler recived disconnect as "+ payload.Reason + " and transfer peers to LocalNode ");
-                        var addressList = payload.Data
-                            .AsSerializableArray<NetworkAddressWithTime>(AddrPayload.MaxCountToSend)
-                            .Select(p => p.EndPoint)
-                            .Where(p => p.Port > 0);
-                        system.LocalNode.Tell(new Peer.Peers { EndPoints = addressList });
-                    }
-                    catch { }
-                    break;
-                default: break;
-            }
-            Context.Stop(Self);
+            //switch (payload.Reason)
+            //{
+            //    case DisconnectReason.MaxConnectionReached:
+            //    case DisconnectReason.MaxConnectionPerAddressReached:
+            //        try
+            //        {
+            //            System.Console.WriteLine("ProtocolHandler recived disconnect as " + payload.Reason + " and transfer peers to LocalNode ");
+            //            var addressList = payload.Data
+            //                .AsSerializableArray<NetworkAddressWithTime>(AddrPayload.MaxCountToSend)
+            //                .Select(p => p.EndPoint)
+            //                .Where(p => p.Port > 0);
+            //            system.LocalNode.Tell(new Peer.Peers { EndPoints = addressList });
+            //        }
+            //        catch { }
+            //        break;
+            //    default: break;
+            //}
+            //Context.Stop(Self);
         }
 
         public static Props Props(NeoSystem system)
