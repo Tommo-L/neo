@@ -229,7 +229,7 @@ namespace Neo.Network.P2P
             {
                 Sender.Tell(new Tcp.Register(ActorRefs.Nobody));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine("Found a error here: ");
                 Console.WriteLine(e);
