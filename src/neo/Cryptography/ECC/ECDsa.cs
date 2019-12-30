@@ -35,7 +35,7 @@ namespace Neo.Cryptography.ECC
 
         public BigInteger[] GenerateSignature(ReadOnlySpan<byte> message)
         {
-            if (privateKey == null) throw new InvalidOperationException();
+            if (privateKey == null || publicKey.IsInfinity) throw new InvalidOperationException();
             BigInteger e = CalculateE(curve.N, message);
             BigInteger d = new BigInteger(privateKey, isUnsigned: true, isBigEndian: true);
             BigInteger r, s;

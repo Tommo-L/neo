@@ -1,5 +1,6 @@
 using System;
 using System.Numerics;
+using System.Security.Cryptography;
 
 namespace Neo.Cryptography.ECC
 {
@@ -106,29 +107,31 @@ namespace Neo.Cryptography.ECC
             BigInteger Q = this.Value;
             BigInteger fourQ = (Q << 2).Mod(curve.Q);
             BigInteger U, V;
-            do
+            using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
             {
-                Random rand = new Random();
-                BigInteger P;
                 do
                 {
-                    P = rand.NextBigInteger(curve.Q.GetBitLength());
-                }
-                while (P >= curve.Q || BigInteger.ModPow(P * P - fourQ, legendreExponent, curve.Q) != qMinusOne);
-                BigInteger[] result = FastLucasSequence(curve.Q, P, Q, k);
-                U = result[0];
-                V = result[1];
-                if ((V * V).Mod(curve.Q) == fourQ)
-                {
-                    if (V.TestBit(0))
+                    BigInteger P;
+                    do
                     {
-                        V += curve.Q;
+                        P = rng.NextBigInteger(curve.Q.GetBitLength());
                     }
-                    V >>= 1;
-                    return new ECFieldElement(V, curve);
+                    while (P >= curve.Q || BigInteger.ModPow(P * P - fourQ, legendreExponent, curve.Q) != qMinusOne);
+                    BigInteger[] result = FastLucasSequence(curve.Q, P, Q, k);
+                    U = result[0];
+                    V = result[1];
+                    if ((V * V).Mod(curve.Q) == fourQ)
+                    {
+                        if (V.TestBit(0))
+                        {
+                            V += curve.Q;
+                        }
+                        V >>= 1;
+                        return new ECFieldElement(V, curve);
+                    }
                 }
+                while (U.Equals(BigInteger.One) || U.Equals(qMinusOne));
             }
-            while (U.Equals(BigInteger.One) || U.Equals(qMinusOne));
             return null;
         }
 
