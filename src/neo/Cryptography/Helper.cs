@@ -18,7 +18,7 @@ namespace Neo.Cryptography
             using (Aes aes = Aes.Create())
             {
                 aes.Key = key;
-                aes.Mode = CipherMode.ECB;
+                aes.Mode = CipherMode.CBC;
                 aes.Padding = PaddingMode.None;
                 using (ICryptoTransform decryptor = aes.CreateDecryptor())
                 {
@@ -32,7 +32,7 @@ namespace Neo.Cryptography
             using (Aes aes = Aes.Create())
             {
                 aes.Key = key;
-                aes.Mode = CipherMode.ECB;
+                aes.Mode = CipherMode.CBC;
                 aes.Padding = PaddingMode.None;
                 using (ICryptoTransform encryptor = aes.CreateEncryptor())
                 {

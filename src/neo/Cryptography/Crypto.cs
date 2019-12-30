@@ -7,16 +7,25 @@ namespace Neo.Cryptography
     {
         public static byte[] Hash160(ReadOnlySpan<byte> message)
         {
+            if (message == null)
+                throw new ArgumentNullException();
             return message.Sha256().RIPEMD160();
         }
 
         public static byte[] Hash256(ReadOnlySpan<byte> message)
         {
+            if (message == null)
+                throw new ArgumentNullException();
             return message.Sha256().Sha256();
         }
 
         public static byte[] Sign(byte[] message, byte[] prikey, byte[] pubkey)
         {
+            if (message == null || prikey == null || pubkey == null)
+                throw new ArgumentNullException();
+            if (prikey.Length != 32 || pubkey.Length != 64)
+                throw new ArgumentException();
+
             using (var ecdsa = ECDsa.Create(new ECParameters
             {
                 Curve = ECCurve.NamedCurves.nistP256,
@@ -34,6 +43,8 @@ namespace Neo.Cryptography
 
         public static bool VerifySignature(ReadOnlySpan<byte> message, ReadOnlySpan<byte> signature, ReadOnlySpan<byte> pubkey)
         {
+            if (message == null || signature == null || pubkey == null)
+                throw new ArgumentNullException();
             if (pubkey.Length == 33 && (pubkey[0] == 0x02 || pubkey[0] == 0x03))
             {
                 try

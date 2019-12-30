@@ -73,6 +73,14 @@ namespace Neo.Cryptography
         [System.Security.SecurityCritical]  // auto-generated
         private unsafe void _HashData(byte[] partIn, int ibStart, int cbSize)
         {
+            if (partIn == null)
+            {
+                throw new ArgumentNullException();
+            }
+            if (ibStart < 0 || ibStart >= cbSize || ibStart >= partIn.Length || cbSize > partIn.Length)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
             int bufferLen;
             int partInLen = cbSize;
             int partInBase = ibStart;
