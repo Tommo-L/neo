@@ -8,6 +8,7 @@ using System.Reflection;
 namespace Neo.UnitTests
 {
     [TestClass]
+    //[NotReRunnable]
     public class UT_ProtocolSettings
     {
         // since ProtocolSettings.Default is designed to be writable only once, use reflection to 
@@ -22,6 +23,7 @@ namespace Neo.UnitTests
         [TestInitialize]
         public void Initialize()
         {
+            System.Console.WriteLine("\n--- begin");
             ResetProtocolSettings();
         }
 
@@ -29,6 +31,7 @@ namespace Neo.UnitTests
         public void Cleanup()
         {
             ResetProtocolSettings();
+            System.Console.WriteLine("--- end");
         }
 
         [TestMethod]

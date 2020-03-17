@@ -41,6 +41,7 @@ namespace Neo.UnitTests
             var testContext = new object[] { new UnitTestContext() };
 
             // run all the tests, varying the culture each time.
+
             try
             {
                 foreach (var culture in cultures)
@@ -50,6 +51,8 @@ namespace Neo.UnitTests
                     foreach (var c in testClasses)
                     {
                         var instance = c.Constructor.Invoke(emptyObjArray);
+                        if (instance.GetType() != typeof(UT_ProtocolSettings)) continue;
+
                         if (c.ClassInit != null)
                         {
                             c.ClassInit.Invoke(instance, testContext);
