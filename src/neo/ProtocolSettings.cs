@@ -19,6 +19,7 @@ namespace Neo
         static bool UpdateDefault(IConfiguration configuration)
         {
             var settings = new ProtocolSettings(configuration.GetSection("ProtocolConfiguration"));
+            Console.WriteLine("ProtolSettings default is null?  => " + (_default is null) + "  seting is null => " + (settings is null));
             return null == Interlocked.CompareExchange(ref _default, settings, null);
         }
 

@@ -58,6 +58,7 @@ namespace Neo.UnitTests
             };
 
             var config = new ConfigurationBuilder().AddInMemoryCollection(dict).Build();
+            System.Console.WriteLine("config is null => " + (config is null));
             ProtocolSettings.Initialize(config).Should().BeTrue();
             ProtocolSettings.Default.Magic.Should().Be(expectedMagic);
         }
