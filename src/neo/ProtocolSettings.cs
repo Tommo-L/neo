@@ -21,7 +21,7 @@ namespace Neo
             var settings = new ProtocolSettings(configuration.GetSection("ProtocolConfiguration"));
             Console.WriteLine("ProtolSettings default is null?  => " + (_default is null) + "  seting is null => " + (settings is null));
             bool ret = null == Interlocked.CompareExchange(ref _default, settings, null);
-            if(!ret)
+            if (!ret)
             {
                 Console.WriteLine("found you");
             }
