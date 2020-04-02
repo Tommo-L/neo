@@ -60,6 +60,7 @@ namespace Neo.UnitTests
                 { "ProtocolConfiguration:Magic", $"{expectedMagic}" }
             };
 
+            System.Console.WriteLine("enter protocol init method...");
             var config = new ConfigurationBuilder().AddInMemoryCollection(dict).Build();
             System.Console.WriteLine("config is null => " + (config is null));
             ProtocolSettings.Initialize(config).Should().BeTrue();
