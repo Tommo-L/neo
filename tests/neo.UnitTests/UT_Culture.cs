@@ -35,7 +35,7 @@ namespace Neo.UnitTests
                                    && m.GetCustomAttribute<NotReRunnableAttribute>() == null).ToList()
                                }).ToList();
 
-            var cultures = new string[] { "en-US", "zh-CN", "de-DE", "ko-KR", "ja-JP" };
+            var cultures = new string[] { "en-US", "zh-CN" };
             var originalUICulture = CultureInfo.CurrentCulture;
             var emptyObjArray = new object[] { };
             var testContext = new object[] { new UnitTestContext() };
