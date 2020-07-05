@@ -202,7 +202,7 @@ namespace Neo.UnitTests.Wallets
 
             // Fake balance
             var snapshot = Blockchain.Singleton.GetSnapshot();
-            var key = NativeContract.GAS.CreateStorageKey(20, account.ScriptHash);
+            var key = NativeContract.GAS.CreateStorageKey(20).Add(account.ScriptHash);
             var entry = snapshot.Storages.GetAndChange(key, () => new StorageItem(new AccountState()));
             entry.GetInteroperable<AccountState>().Balance = 10000 * NativeContract.GAS.Factor;
             snapshot.Commit();
@@ -224,7 +224,7 @@ namespace Neo.UnitTests.Wallets
 
             // Fake balance
             var snapshot = Blockchain.Singleton.GetSnapshot();
-            var key = NativeContract.GAS.CreateStorageKey(20, account.ScriptHash);
+            var key = NativeContract.GAS.CreateStorageKey(20).Add(account.ScriptHash);
             var entry = snapshot.Storages.GetAndChange(key, () => new StorageItem(new AccountState()));
             entry.GetInteroperable<AccountState>().Balance = 10000 * NativeContract.GAS.Factor;
             snapshot.Commit();
@@ -324,11 +324,11 @@ namespace Neo.UnitTests.Wallets
 
             // Fake balance
             var snapshot = Blockchain.Singleton.GetSnapshot();
-            var key = NativeContract.GAS.CreateStorageKey(20, account.ScriptHash);
+            var key = NativeContract.GAS.CreateStorageKey(20).Add(account.ScriptHash);
             var entry1 = snapshot.Storages.GetAndChange(key, () => new StorageItem(new AccountState()));
             entry1.GetInteroperable<AccountState>().Balance = 10000 * NativeContract.GAS.Factor;
 
-            key = NativeContract.NEO.CreateStorageKey(20, account.ScriptHash);
+            key = NativeContract.NEO.CreateStorageKey(20).Add(account.ScriptHash);
             var entry2 = snapshot.Storages.GetAndChange(key, () => new StorageItem(new NeoToken.NeoAccountState()));
             entry2.GetInteroperable<NeoToken.NeoAccountState>().Balance = 10000 * NativeContract.NEO.Factor;
 
@@ -376,7 +376,7 @@ namespace Neo.UnitTests.Wallets
 
             // Fake balance
             var snapshot = Blockchain.Singleton.GetSnapshot();
-            var key = NativeContract.GAS.CreateStorageKey(20, account.ScriptHash);
+            var key = NativeContract.GAS.CreateStorageKey(20).Add(account.ScriptHash);
             var entry = snapshot.Storages.GetAndChange(key, () => new StorageItem(new AccountState()));
             entry.GetInteroperable<AccountState>().Balance = 1000000 * NativeContract.GAS.Factor;
             snapshot.Commit();

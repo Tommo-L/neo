@@ -56,15 +56,6 @@ namespace Neo.UnitTests
             return manifest;
         }
 
-        public static StorageKey CreateStorageKey(this NativeContract contract, byte prefix, ISerializable key)
-        {
-            return new StorageKey
-            {
-                Id = contract.Id,
-                Key = key.ToArray().Prepend(prefix).ToArray()
-            };
-        }
-
         public static byte[] GetByteArray(int length, byte firstByte)
         {
             byte[] array = new byte[length];
@@ -103,6 +94,11 @@ namespace Neo.UnitTests
             };
         }
 
+        internal static KeyBuilder GetStorageKey(int id, byte prefix)
+        {
+            return new KeyBuilder(id, prefix);
+        }
+
         internal static ContractState GetContract(string method = "test", int parametersCount = 0)
         {
             return new ContractState
@@ -128,15 +124,6 @@ namespace Neo.UnitTests
             return new StorageItem
             {
                 Value = value
-            };
-        }
-
-        internal static StorageKey GetStorageKey(int id, byte[] keyValue)
-        {
-            return new StorageKey
-            {
-                Id = id,
-                Key = keyValue
             };
         }
 

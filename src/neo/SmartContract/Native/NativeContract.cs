@@ -78,7 +78,7 @@ namespace Neo.SmartContract.Native
             contractsHashDictionary.Add(Hash, this);
         }
 
-        private protected KeyBuilder CreateStorageKey(byte prefix)
+        internal KeyBuilder CreateStorageKey(byte prefix)
         {
             return new KeyBuilder(Id, prefix);
         }

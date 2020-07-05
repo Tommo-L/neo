@@ -106,7 +106,7 @@ namespace Neo.UnitTests.Network.P2P.Payloads
 
                 // Fake balance
 
-                var key = NativeContract.GAS.CreateStorageKey(20, acc.ScriptHash);
+                var key = NativeContract.GAS.CreateStorageKey(20).Add(acc.ScriptHash);
                 var entry = snapshot.Storages.GetAndChange(key, () => new StorageItem(new AccountState()));
 
                 entry.GetInteroperable<AccountState>().Balance = 10000 * NativeContract.GAS.Factor;
@@ -175,7 +175,7 @@ namespace Neo.UnitTests.Network.P2P.Payloads
 
                 // Fake balance
 
-                var key = NativeContract.GAS.CreateStorageKey(20, acc.ScriptHash);
+                var key = NativeContract.GAS.CreateStorageKey(20).Add(acc.ScriptHash);
 
                 var entry = snapshot.Storages.GetAndChange(key, () => new StorageItem(new AccountState()));
 
@@ -286,7 +286,7 @@ namespace Neo.UnitTests.Network.P2P.Payloads
 
                 // Fake balance
 
-                var key = NativeContract.GAS.CreateStorageKey(20, acc.ScriptHash);
+                var key = NativeContract.GAS.CreateStorageKey(20).Add(acc.ScriptHash);
 
                 var entry = snapshot.Storages.GetAndChange(key, () => new StorageItem(new AccountState()));
 
@@ -372,7 +372,7 @@ namespace Neo.UnitTests.Network.P2P.Payloads
 
                 // Fake balance
 
-                var key = NativeContract.GAS.CreateStorageKey(20, acc.ScriptHash);
+                var key = NativeContract.GAS.CreateStorageKey(20).Add(acc.ScriptHash);
 
                 var entry = snapshot.Storages.GetAndChange(key, () => new StorageItem(new AccountState()));
 
@@ -459,7 +459,7 @@ namespace Neo.UnitTests.Network.P2P.Payloads
 
                 // Fake balance
 
-                var key = NativeContract.GAS.CreateStorageKey(20, acc.ScriptHash);
+                var key = NativeContract.GAS.CreateStorageKey(20).Add(acc.ScriptHash);
 
                 var entry = snapshot.Storages.GetAndChange(key, () => new StorageItem(new AccountState()));
 
@@ -549,7 +549,7 @@ namespace Neo.UnitTests.Network.P2P.Payloads
 
                 // Fake balance
 
-                var key = NativeContract.GAS.CreateStorageKey(20, acc.ScriptHash);
+                var key = NativeContract.GAS.CreateStorageKey(20).Add(acc.ScriptHash);
 
                 var entry = snapshot.Storages.GetAndChange(key, () => new StorageItem(new AccountState()));
 
@@ -599,7 +599,7 @@ namespace Neo.UnitTests.Network.P2P.Payloads
 
                 // Fake balance
 
-                var key = NativeContract.GAS.CreateStorageKey(20, acc.ScriptHash);
+                var key = NativeContract.GAS.CreateStorageKey(20).Add(acc.ScriptHash);
 
                 var entry = snapshot.Storages.GetAndChange(key, () => new StorageItem(new AccountState()));
 
@@ -691,7 +691,7 @@ namespace Neo.UnitTests.Network.P2P.Payloads
 
                 // Fake balance
 
-                var key = NativeContract.GAS.CreateStorageKey(20, acc.ScriptHash);
+                var key = NativeContract.GAS.CreateStorageKey(20).Add(acc.ScriptHash);
 
                 var entry = snapshot.Storages.GetAndChange(key, () => new StorageItem(new AccountState()));
 
@@ -937,7 +937,7 @@ namespace Neo.UnitTests.Network.P2P.Payloads
 
                 // Fake balance
 
-                var key = NativeContract.GAS.CreateStorageKey(20, acc.ScriptHash);
+                var key = NativeContract.GAS.CreateStorageKey(20).Add(acc.ScriptHash);
 
                 var entry = snapshot.Storages.GetAndChange(key, () => new StorageItem(new AccountState()));
 

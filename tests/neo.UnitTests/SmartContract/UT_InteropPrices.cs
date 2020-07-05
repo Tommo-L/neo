@@ -58,7 +58,7 @@ namespace Neo.UnitTests.SmartContract
             ContractState contractState = TestUtils.GetContract(script);
             contractState.Manifest.Features = ContractFeatures.HasStorage;
 
-            StorageKey skey = TestUtils.GetStorageKey(contractState.Id, key);
+            StorageKey skey = TestUtils.GetStorageKey(contractState.Id, key[0]);
             StorageItem sItem = TestUtils.GetStorageItem(new byte[0] { });
 
             var snapshot = Blockchain.Singleton.GetSnapshot();
@@ -92,7 +92,7 @@ namespace Neo.UnitTests.SmartContract
             ContractState contractState = TestUtils.GetContract(script);
             contractState.Manifest.Features = ContractFeatures.HasStorage;
 
-            StorageKey skey = TestUtils.GetStorageKey(contractState.Id, key);
+            StorageKey skey = TestUtils.GetStorageKey(contractState.Id, key[0]);
             StorageItem sItem = TestUtils.GetStorageItem(value);
 
             var snapshot = Blockchain.Singleton.GetSnapshot();
@@ -128,7 +128,7 @@ namespace Neo.UnitTests.SmartContract
             ContractState contractState = TestUtils.GetContract(script);
             contractState.Manifest.Features = ContractFeatures.HasStorage;
 
-            StorageKey skey = TestUtils.GetStorageKey(contractState.Id, key);
+            StorageKey skey = TestUtils.GetStorageKey(contractState.Id, key[0]);
             StorageItem sItem = TestUtils.GetStorageItem(oldValue);
 
             var snapshot = Blockchain.Singleton.GetSnapshot();
@@ -165,7 +165,7 @@ namespace Neo.UnitTests.SmartContract
             ContractState contractState = TestUtils.GetContract(script);
             contractState.Manifest.Features = ContractFeatures.HasStorage;
 
-            StorageKey skey = TestUtils.GetStorageKey(contractState.Id, key);
+            StorageKey skey = TestUtils.GetStorageKey(contractState.Id, key[0]);
             StorageItem sItem = TestUtils.GetStorageItem(oldValue);
 
             var snapshot = Blockchain.Singleton.GetSnapshot();
