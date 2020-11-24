@@ -59,7 +59,7 @@ namespace Neo.SmartContract
 
             ContractMethodDescriptor md = contract.Manifest.Abi.GetMethod("_deploy");
             if (md != null)
-                CallContractInternal(contract, md, new Array(ReferenceCounter) { false }, CallFlags.All, ReturnTypeConvention.EnsureIsEmpty, CurrentContext.GetState<ExecutionContextState>());
+                CallContractInternal(contract, md, new Array(ReferenceCounter) { false }, CallFlags.All, ReturnTypeConvention.EnsureIsEmpty);
         }
 
         protected internal void UpdateContract(byte[] script, byte[] manifest)
@@ -101,7 +101,7 @@ namespace Neo.SmartContract
             {
                 ContractMethodDescriptor md = contract.Manifest.Abi.GetMethod("_deploy");
                 if (md != null)
-                    CallContractInternal(contract, md, new Array(ReferenceCounter) { true }, CallFlags.All, ReturnTypeConvention.EnsureIsEmpty, CurrentContext.GetState<ExecutionContextState>());
+                    CallContractInternal(contract, md, new Array(ReferenceCounter) { true }, CallFlags.All, ReturnTypeConvention.EnsureIsEmpty);
             }
         }
 
@@ -124,10 +124,10 @@ namespace Neo.SmartContract
         {
             if ((callFlags & ~CallFlags.All) != 0)
                 throw new ArgumentOutOfRangeException(nameof(callFlags));
-            CallContractInternal(contractHash, method, args, callFlags, ReturnTypeConvention.EnsureNotEmpty, CurrentContext.GetState<ExecutionContextState>());
+            CallContractInternal(contractHash, method, args, callFlags, ReturnTypeConvention.EnsureNotEmpty);
         }
 
-        private void CallContractInternal(UInt160 contractHash, string method, Array args, CallFlags flags, ReturnTypeConvention convention, ExecutionContextState callerState)
+        private void CallContractInternal(UInt160 contractHash, string method, Array args, CallFlags flags, ReturnTypeConvention convention, ExecutionContextState callerState = null)
         {
             if (method.StartsWith('_')) throw new ArgumentException($"Invalid Method Name: {method}");
 
@@ -143,7 +143,7 @@ namespace Neo.SmartContract
             CallContractInternal(contract, md, args, flags, convention, callerState);
         }
 
-        private void CallContractInternal(ContractState contract, ContractMethodDescriptor method, Array args, CallFlags flags, ReturnTypeConvention convention, ExecutionContextState callerState)
+        private void CallContractInternal(ContractState contract, ContractMethodDescriptor method, Array args, CallFlags flags, ReturnTypeConvention convention, ExecutionContextState callerState = null)
         {
             if (invocationCounter.TryGetValue(contract.ScriptHash, out var counter))
             {
