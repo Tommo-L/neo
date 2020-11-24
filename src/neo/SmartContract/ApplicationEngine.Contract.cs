@@ -59,7 +59,7 @@ namespace Neo.SmartContract
 
             ContractMethodDescriptor md = contract.Manifest.Abi.GetMethod("_deploy");
             if (md != null)
-                CallContractInternal(contract, md, new Array(ReferenceCounter) { false }, CallFlags.All, ReturnTypeConvention.EnsureIsEmpty);
+                CallContractInternal(contract, md, new Array(ReferenceCounter) { false }, CallFlags.All, ReturnTypeConvention.EnsureIsEmpty, CurrentContext.GetState<ExecutionContextState>());
         }
 
         protected internal void UpdateContract(byte[] script, byte[] manifest)
@@ -101,7 +101,7 @@ namespace Neo.SmartContract
             {
                 ContractMethodDescriptor md = contract.Manifest.Abi.GetMethod("_deploy");
                 if (md != null)
-                    CallContractInternal(contract, md, new Array(ReferenceCounter) { true }, CallFlags.All, ReturnTypeConvention.EnsureIsEmpty);
+                    CallContractInternal(contract, md, new Array(ReferenceCounter) { true }, CallFlags.All, ReturnTypeConvention.EnsureIsEmpty, CurrentContext.GetState<ExecutionContextState>());
             }
         }
 
@@ -124,10 +124,10 @@ namespace Neo.SmartContract
         {
             if ((callFlags & ~CallFlags.All) != 0)
                 throw new ArgumentOutOfRangeException(nameof(callFlags));
-            CallContractInternal(contractHash, method, args, callFlags, ReturnTypeConvention.EnsureNotEmpty);
+            CallContractInternal(contractHash, method, args, callFlags, ReturnTypeConvention.EnsureNotEmpty, CurrentContext.GetState<ExecutionContextState>());
         }
 
-        private void CallContractInternal(UInt160 contractHash, string method, Array args, CallFlags flags, ReturnTypeConvention convention)
+        private void CallContractInternal(UInt160 contractHash, string method, Array args, CallFlags flags, ReturnTypeConvention convention, ExecutionContextState callerState)
         {
             if (method.StartsWith('_')) throw new ArgumentException($"Invalid Method Name: {method}");
 
@@ -140,10 +140,10 @@ namespace Neo.SmartContract
             if (currentManifest != null && !currentManifest.CanCall(contract.Manifest, method))
                 throw new InvalidOperationException($"Cannot Call Method {method} Of Contract {contractHash} From Contract {CurrentScriptHash}");
 
-            CallContractInternal(contract, md, args, flags, convention);
+            CallContractInternal(contract, md, args, flags, convention, callerState);
         }
 
-        private void CallContractInternal(ContractState contract, ContractMethodDescriptor method, Array args, CallFlags flags, ReturnTypeConvention convention)
+        private void CallContractInternal(ContractState contract, ContractMethodDescriptor method, Array args, CallFlags flags, ReturnTypeConvention convention, ExecutionContextState callerState)
         {
             if (invocationCounter.TryGetValue(contract.ScriptHash, out var counter))
             {
@@ -156,13 +156,13 @@ namespace Neo.SmartContract
 
             GetInvocationState(CurrentContext).Convention = convention;
 
-            ExecutionContextState state = CurrentContext.GetState<ExecutionContextState>();
-            UInt160 callingScriptHash = state.ScriptHash;
-            CallFlags callingFlags = state.CallFlags;
+            callerState ??= CurrentContext.GetState<ExecutionContextState>();
+            UInt160 callingScriptHash = callerState.ScriptHash;
+            CallFlags callingFlags = callerState.CallFlags;
 
             if (args.Count != method.Parameters.Length) throw new InvalidOperationException($"Method {method.Name} Expects {method.Parameters.Length} Arguments But Receives {args.Count} Arguments");
             ExecutionContext context_new = LoadContract(contract, method.Name, flags & callingFlags);
-            state = context_new.GetState<ExecutionContextState>();
+            ExecutionContextState state = context_new.GetState<ExecutionContextState>();
             state.CallingScriptHash = callingScriptHash;
 
             if (NativeContract.IsNative(contract.ScriptHash))

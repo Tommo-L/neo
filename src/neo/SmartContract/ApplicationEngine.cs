@@ -84,20 +84,20 @@ namespace Neo.SmartContract
             base.OnFault(e);
         }
 
-        internal void CallFromNativeContract(Action onComplete, UInt160 hash, string method, params StackItem[] args)
+        internal void CallFromNativeContract(Action onComplete, ExecutionContextState callerState, UInt160 hash, string method, params StackItem[] args)
         {
             InvocationState state = GetInvocationState(CurrentContext);
             state.ReturnType = typeof(void);
             state.Callback = onComplete;
-            CallContractInternal(hash, method, new VMArray(ReferenceCounter, args), CallFlags.All, ReturnTypeConvention.EnsureIsEmpty);
+            CallContractInternal(hash, method, new VMArray(ReferenceCounter, args), CallFlags.All, ReturnTypeConvention.EnsureIsEmpty, callerState);
         }
 
-        internal void CallFromNativeContract<T>(Action<T> onComplete, UInt160 hash, string method, params StackItem[] args)
+        internal void CallFromNativeContract<T>(Action<T> onComplete, ExecutionContextState callerState, UInt160 hash, string method, params StackItem[] args)
         {
             InvocationState state = GetInvocationState(CurrentContext);
             state.ReturnType = typeof(T);
             state.Callback = onComplete;
-            CallContractInternal(hash, method, new VMArray(ReferenceCounter, args), CallFlags.All, ReturnTypeConvention.EnsureNotEmpty);
+            CallContractInternal(hash, method, new VMArray(ReferenceCounter, args), CallFlags.All, ReturnTypeConvention.EnsureNotEmpty, callerState);
         }
 
         protected override void ContextUnloaded(ExecutionContext context)

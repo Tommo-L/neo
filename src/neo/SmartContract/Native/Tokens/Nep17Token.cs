@@ -164,7 +164,13 @@ namespace Neo.SmartContract.Native.Tokens
 
             // Call onPayment method (NEP-17)
 
-            engine.CallFromNativeContract(null, to, "onPayment", from?.ToArray() ?? StackItem.Null, amount);
+            ExecutionContextState callerState = engine.CurrentContext.GetState<ExecutionContextState>();
+            engine.CallFromNativeContract(null, new ExecutionContextState()
+            {
+                CallFlags = callerState.CallFlags,
+                CallingScriptHash = engine.CurrentScriptHash,
+                ScriptHash = GAS.Hash
+            }, to, "onPayment", from?.ToArray() ?? StackItem.Null, amount);
         }
     }
 }
